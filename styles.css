@@ -1,0 +1,111 @@
+/* styles.css - Blue & White theme for Cryonix Launcher website */
+:root{
+  --primary: #0b63ff; /* vivid blue */
+  --primary-600: #0953d9;
+  --primary-200: #cfe4ff;
+  --bg: #ffffff;
+  --surface: #f6fbff; /* very light blue */
+  --muted: #6b7280; /* gray */
+  --text: #0f1724; /* near-black for good contrast */
+  --glass: rgba(11,99,255,0.06);
+  --accent: #0b63ff;
+  --radius: 12px;
+  --shadow: 0 8px 24px rgba(11,99,255,0.08);
+}
+
+/* Reset & layout */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--bg); color:var(--text);}
+.container{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));backdrop-filter:blur(6px);border-bottom:1px solid rgba(11,99,255,0.06)}
+.navbar .container{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+.navbar-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem;color:var(--primary)}
+.navbar-brand .fa-cube{background:linear-gradient(90deg,var(--primary),#4fa3ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{list-style:none;margin:0;padding:0;display:flex;gap:18px;align-items:center}
+.nav-links a{color:var(--text);text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:500}
+.nav-links a.btn-nav{background:var(--primary);color:#fff;padding:8px 14px}
+.nav-links a:hover{background:var(--surface)}
+.hamburger{display:none;cursor:pointer}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:4px 0;border-radius:2px}
+
+/* Hero */
+.hero{padding:80px 0 60px;position:relative;background:linear-gradient(180deg,var(--surface),#fff)}
+.hero-content{display:flex;gap:40px;align-items:center}
+.hero-text{flex:1}
+.hero-title{font-family:'Orbitron',sans-serif;font-size:42px;margin:0 0 10px;color:var(--primary)}
+.hero-subtitle{margin:0 0 8px;font-weight:600;color:var(--text)}
+.hero-description{color:var(--muted);max-width:620px}
+.hero-buttons{margin-top:18px;display:flex;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:10px;padding:10px 16px;text-decoration:none;font-weight:600}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{background:var(--primary-600)}
+.btn-secondary{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+.btn-secondary:hover{background:var(--primary-200)}
+.hero-image{width:320px;display:flex;justify-content:center}
+.floating-card{width:220px;height:220px;border-radius:20px;background:linear-gradient(135deg,#ffffff, var(--surface));display:flex;align-items:center;justify-content:center;position:relative;box-shadow:var(--shadow);border:1px solid rgba(11,99,255,0.06)}
+.floating-card .fa-gamepad{font-size:44px;color:var(--primary)}
+.card-glow{position:absolute;inset:-30px;background:radial-gradient(circle at 30% 40%, rgba(11,99,255,0.18), transparent 25%);filter:blur(18px);z-index:-1}
+.scroll-indicator{position:absolute;left:50%;transform:translateX(-50%);bottom:10px}
+.scroll-indicator span{display:block;width:26px;height:40px;border-radius:15px;border:2px solid rgba(11,99,255,0.3);position:relative}
+.scroll-indicator span:after{content:'';position:absolute;left:50%;transform:translateX(-50%);top:8px;width:6px;height:6px;border-radius:50%;background:var(--primary);animation:scroll 1.6s infinite}
+@keyframes scroll{0%{top:8px;opacity:1}100%{top:24px;opacity:0}}
+
+/* Sections */
+.section-title{font-size:28px;margin:0 0 6px;color:var(--primary)}
+.section-subtitle{margin:0 0 22px;color:var(--muted)}
+
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature-card{background:linear-gradient(180deg,#fff,var(--surface));padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(11,99,255,0.04);border:1px solid rgba(11,99,255,0.04)}
+.feature-icon{width:52px;height:52px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center;color:var(--primary);margin-bottom:12px}
+.feature-card h3{margin:0 0 10px}
+.feature-card p{margin:0;color:var(--muted)}
+
+.screenshots-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.screenshot-card{background:linear-gradient(180deg,#fff,var(--surface));padding:18px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--muted);border:1px solid rgba(11,99,255,0.04)}
+.screenshot-placeholder{font-size:36px;color:var(--primary);display:flex;align-items:center;flex-direction:column;gap:8px}
+
+.reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.review-card{background:linear-gradient(180deg,#fff,var(--surface));padding:16px;border-radius:12px;border:1px solid rgba(11,99,255,0.04)}
+.review-stars{color:gold;margin-bottom:8px}
+.review-text{color:var(--muted);margin-bottom:12px}
+.review-author{display:flex;gap:12px;align-items:center}
+.author-avatar{width:44px;height:44px;border-radius:8px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+.faq-container{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.faq-item{background:linear-gradient(180deg,#fff,var(--surface));border-radius:10px;padding:12px;border:1px solid rgba(11,99,255,0.04)}
+.faq-question{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;padding:8px;font-weight:600;color:var(--text)}
+.faq-answer{padding-top:8px;color:var(--muted);display:none}
+.faq-item.open .faq-answer{display:block}
+
+/* Download area */
+.download-buttons{display:flex;gap:12px}
+.download-btn{display:flex;gap:12px;align-items:center;padding:12px 16px;border-radius:10px;background:linear-gradient(180deg,#fff,var(--surface));border:1px solid rgba(11,99,255,0.06);text-decoration:none;color:var(--text)}
+.download-btn .fab{font-size:28px;color:var(--primary)}
+.stats{display:flex;gap:12px;margin-top:18px}
+.stat-box{flex:1;background:var(--surface);padding:12px;border-radius:10px;text-align:center}
+
+/* Footer */
+.footer{background:linear-gradient(180deg,var(--primary) 0%, #0b4bd6 100%);color:#fff;padding:32px 0;margin-top:30px}
+.footer a{color:rgba(255,255,255,0.9)}
+.footer .footer-content{display:flex;gap:24px;flex-wrap:wrap}
+.footer-section{flex:1;min-width:180px}
+.footer-bottom{text-align:center;margin-top:18px;color:rgba(255,255,255,0.9)}
+
+/* Utilities & responsive */
+.text-center{text-align:center}
+@media (max-width:900px){
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .screenshots-grid{grid-template-columns:repeat(2,1fr)}
+  .reviews-grid{grid-template-columns:1fr}
+  .faq-container{grid-template-columns:1fr}
+  .hero-content{flex-direction:column-reverse;align-items:flex-start}
+  .hamburger{display:block}
+  .nav-links{display:none}
+}
+@media (max-width:480px){
+  .hero-title{font-size:28px}
+  .hero-image{width:100%}
+  .floating-card{width:180px;height:180px}
+}
