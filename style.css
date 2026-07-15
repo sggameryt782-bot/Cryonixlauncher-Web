@@ -1,1 +1,253 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:
+    radial-gradient(circle at top,#2196f355 0%,transparent 40%),
+    radial-gradient(circle at bottom,#1565c055 0%,transparent 40%),
+    linear-gradient(180deg,#030b1b,#06152e,#081f42,#030a18);
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#3da5ff;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-track{
+    background:#05111f;
+}
+
+/* Navbar */
+
+header{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 8%;
+    backdrop-filter:blur(18px);
+    background:rgba(255,255,255,.04);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:28px;
+    font-weight:700;
+}
+
+.logo i{
+    color:#4fc3ff;
+    text-shadow:0 0 20px #00bfff;
+}
+
+.social a{
+    color:white;
+    margin-left:25px;
+    font-size:24px;
+    transition:.35s;
+}
+
+.social a:hover{
+    color:#4fc3ff;
+    transform:translateY(-5px) scale(1.15);
+}
+
+/* Hero */
+
+.hero{
+    padding:120px 20px;
+    text-align:center;
+}
+
+.badge{
+    display:inline-block;
+    padding:14px 26px;
+    border-radius:60px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(79,195,255,.5);
+    backdrop-filter:blur(20px);
+    color:#bfe8ff;
+    margin-bottom:40px;
+    box-shadow:0 0 30px rgba(0,180,255,.2);
+}
+
+.hero h1{
+    font-size:85px;
+    font-weight:800;
+    letter-spacing:2px;
+    color:white;
+    text-shadow:
+    0 0 10px #4fc3ff,
+    0 0 25px #2196f3,
+    0 0 50px #1565c0;
+}
+
+.hero p{
+    margin-top:25px;
+    font-size:23px;
+    color:#cce8ff;
+    line-height:1.8;
+}
+
+/* Buttons */
+
+.buttons{
+    margin-top:55px;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:18px 42px;
+    border-radius:18px;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:600;
+    transition:.35s;
+}
+
+.primary{
+    background:linear-gradient(135deg,#4fc3ff,#2196f3);
+    color:white;
+    box-shadow:0 0 30px rgba(0,170,255,.5);
+}
+
+.primary:hover{
+    transform:translateY(-6px);
+    box-shadow:0 0 50px #2196f3;
+}
+
+.btn:not(.primary){
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(79,195,255,.35);
+    backdrop-filter:blur(20px);
+    color:white;
+}
+
+.btn:not(.primary):hover{
+    background:#2196f3;
+    transform:translateY(-6px);
+}
+
+/* Download Card */
+
+.download{
+    padding:90px 20px;
+}
+
+.download h2{
+    text-align:center;
+    font-size:52px;
+    margin-bottom:50px;
+}
+
+.card{
+    max-width:750px;
+    margin:auto;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(25px);
+    border-radius:30px;
+    padding:45px;
+    box-shadow:
+    0 0 35px rgba(0,150,255,.18);
+}
+
+.card p{
+    text-align:center;
+    color:#d4ecff;
+    margin-bottom:30px;
+    font-size:22px;
+}
+
+.big-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    color:white;
+    background:linear-gradient(135deg,#2196f3,#0d47a1);
+    padding:20px;
+    border-radius:18px;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:25px;
+    transition:.35s;
+}
+
+.big-btn:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 40px #2196f3;
+}
+
+.bottom{
+    display:flex;
+    gap:20px;
+}
+
+.small-btn{
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    padding:18px;
+    color:white;
+    border-radius:16px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(79,195,255,.35);
+    transition:.35s;
+}
+
+.small-btn:hover{
+    background:#2196f3;
+    transform:translateY(-5px);
+}
+
+/* Footer */
+
+footer{
+    text-align:center;
+    padding:35px;
+    color:#90caf9;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+header{
+padding:20px;
+}
+
+.hero h1{
+font-size:52px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.bottom{
+flex-direction:column;
+}
+
+}
