@@ -1,293 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRYONIXLAUNCHER</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryonix Launcher</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Reset & Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        body {
+            background-color: #f0f4f8; /* Light blue/gray tint background */
+            color: #0d2b45; /* Dark navy blue text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-<style>
+        /* Subtle Abstract Blue Background Graphics (Mimicking the faint background blocks) */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(32, 115, 239, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(32, 115, 239, 0.04) 0%, transparent 40%);
+            z-index: -1;
+        }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        /* Header Navigation */
+        header {
+            width: 100%;
+            max-width: 1200px;
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-scroll-behavior:smooth;
-}
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #104f9b;
+        }
 
-body{
-background:linear-gradient(180deg,#020817,#06142d,#0a1f44,#020817);
-color:#fff;
-overflow-x:hidden;
-}
+        .logo-icon {
+            font-size: 1.4rem;
+        }
 
-/* Background Glow */
+        .nav-socials {
+            display: flex;
+            gap: 20px;
+        }
 
-body::before{
-content:"";
-position:fixed;
-width:700px;
-height:700px;
-background:radial-gradient(circle,#2196f355,transparent 70%);
-top:-250px;
-left:-200px;
-filter:blur(50px);
-z-index:-1;
-}
+        .nav-socials a {
+            color: #537895;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
 
-body::after{
-content:"";
-position:fixed;
-width:600px;
-height:600px;
-background:radial-gradient(circle,#42a5f555,transparent 70%);
-bottom:-200px;
-right:-150px;
-filter:blur(60px);
-z-index:-1;
-}
+        .nav-socials a:hover {
+            color: #2073ef;
+        }
 
-/* Header */
+        /* Main Content Container */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 600px;
+        }
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 8%;
-position:sticky;
-top:0;
-background:rgba(4,18,45,.65);
-backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(255,255,255,.08);
-z-index:100;
-}
+        /* Live Status Badge */
+        .status-badge {
+            background-color: #e3effd;
+            border: 1px solid #c2dbf9;
+            color: #1a56a6;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
 
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-font-size:28px;
-font-weight:700;
-color:white;
-}
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981; /* Keeping green for active/live status */
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
 
-.logo i{
-color:#4fc3ff;
-text-shadow:0 0 15px #2196f3;
-}
+        /* Title & Description */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            color: #0d2b45;
+            margin-bottom: 12px;
+        }
 
-.social a{
-color:white;
-font-size:22px;
-margin-left:18px;
-transition:.3s;
-}
+        .tagline {
+            font-size: 1.25rem;
+            color: #537895;
+            font-weight: 400;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
 
-.social a:hover{
-color:#4fc3ff;
-transform:translateY(-4px);
-}
+        /* Call To Action Buttons Block */
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
 
-/* Hero */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 180px;
+        }
 
-.hero{
-text-align:center;
-padding:120px 20px;
-}
+        .btn-primary {
+            background-color: #2073ef;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 14px rgba(32, 115, 239, 0.3);
+        }
 
-.badge{
-display:inline-block;
-padding:12px 25px;
-background:rgba(255,255,255,.08);
-border:1px solid #3ea6ff;
-border-radius:50px;
-backdrop-filter:blur(20px);
-margin-bottom:35px;
-color:#d7f1ff;
-box-shadow:0 0 20px rgba(0,170,255,.2);
-}
+        .btn-primary:hover {
+            background-color: #1059c7;
+            transform: translateY(-1px);
+        }
 
-.hero h1{
-font-size:80px;
-font-weight:800;
-text-shadow:0 0 20px #2196f3;
-margin-bottom:15px;
-}
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #2073ef;
+            border: 1px solid #d0e1fd;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+        }
 
-.hero p{
-font-size:22px;
-color:#c8e5ff;
-line-height:1.7;
-}
+        .btn-secondary:hover {
+            background-color: #f5f9ff;
+            border-color: #bcd6fe;
+            transform: translateY(-1px);
+        }
 
-/* Buttons */
+        /* Second Section View: Download Box Card (From Image 2) */
+        .download-card {
+            background-color: #ffffff;
+            border: 1px solid #e2ecf8;
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(32, 115, 239, 0.05);
+            margin-top: 20px;
+        }
 
-.buttons{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:25px;
-margin-top:50px;
-}
+        .card-label {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #8da2bb;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
 
-.btn{
-width:240px;
-display:flex;
-align-items:center;
-gap:15px;
-padding:18px 20px;
-background:rgba(255,255,255,.06);
-border:1px solid rgba(255,255,255,.08);
-backdrop-filter:blur(20px);
-border-radius:20px;
-text-decoration:none;
-color:white;
-transition:.35s;
-box-shadow:0 10px 30px rgba(0,0,0,.35);
-}
+        .card-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0d2b45;
+            margin-bottom: 24px;
+        }
 
-.btn:hover{
-transform:translateY(-8px);
-border-color:#3ea6ff;
-box-shadow:0 0 35px rgba(33,150,243,.6);
-}
+        .card-meta {
+            color: #6987a3;
+            font-size: 1.05rem;
+            margin-bottom: 28px;
+        }
 
-.btn i{
-font-size:32px;
-color:#55c2ff;
-}
+        .card-meta span {
+            display: block;
+            margin-top: 4px;
+            font-weight: 500;
+            color: #2073ef;
+            font-size: 0.95rem;
+        }
 
-.btn span{
-font-size:20px;
-font-weight:700;
-display:block;
-}
+        /* Action Grid inside the card */
+        .card-main-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #2073ef;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(32, 115, 239, 0.2);
+            transition: background-color 0.2s;
+        }
 
-.btn small{
-display:block;
-margin-top:4px;
-color:#bddfff;
-font-size:14px;
-}
+        .card-main-btn:hover {
+            background-color: #1059c7;
+        }
 
-.windows{
-background:linear-gradient(135deg,#2196f3,#1565c0);
-}
+        .card-sub-grid {
+            display: flex;
+            gap: 12px;
+        }
 
-.android{
-background:linear-gradient(135deg,#1976d2,#0d47a1);
-}
+        .btn-sub {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #f0f5fc;
+            color: #3b5a75;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid #e1ecf7;
+            transition: all 0.2s;
+        }
 
-.source{
-background:linear-gradient(135deg,#0d47a1,#1e88e5);
-}
+        .btn-sub:hover {
+            background-color: #e3effd;
+            color: #2073ef;
+        }
 
-/* Download Card */
+        /* Footer */
+        footer {
+            padding: 30px 20px;
+            font-size: 0.85rem;
+            color: #8da2bb;
+            font-weight: 500;
+        }
 
-.download{
-padding:90px 20px;
-text-align:center;
-}
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .cta-group { flex-direction: column; width: 100%; }
+            .btn { width: 100%; }
+            .card-sub-grid { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
 
-.download h2{
-font-size:50px;
-margin-bottom:40px;
-}
+    <header>
+        <div class="logo-area">
+            <i class="fa-solid fa-circle-notch logo-icon"></i>
+            <span>Hollow Launcher</span>
+        </div>
+        <div class="nav-socials">
+            <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </header>
 
-.card{
-max-width:800px;
-margin:auto;
-padding:40px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-border-radius:30px;
-backdrop-filter:blur(20px);
-box-shadow:0 0 40px rgba(33,150,243,.18);
-}
+    <main>
+        
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            HyperX Launcher (stable) is live!
+        </div>
 
-.card p{
-font-size:22px;
-color:#d6ebff;
-margin-bottom:25px;
-}
+        <h1>Hollow Launcher</h1>
+        <p class="tagline">Minimal, fast Minecraft launcher<br>for Vanilla & Fabric.</p>
 
-.big-btn{
-display:block;
-padding:18px;
-border-radius:18px;
-background:linear-gradient(135deg,#2196f3,#0d47a1);
-color:white;
-text-decoration:none;
-font-size:22px;
-font-weight:600;
-margin-bottom:25px;
-transition:.3s;
-}
+        <div class="cta-group">
+            <a href="#" class="btn btn-primary">
+                <i class="fa-solid fa-laptop"></i> Windows
+            </a>
+            <a href="#" class="btn btn-secondary">
+                <i class="fa-brands fa-android"></i> Download APK
+            </a>
+        </div>
 
-.big-btn:hover{
-transform:scale(1.03);
-box-shadow:0 0 30px #2196f3;
-}
+        <div class="download-card">
+            <div class="card-label">Get it Free</div>
+            <div class="card-title">Download</div>
+            
+            <div class="card-meta">
+                Always free & open source.
+                <span>Beta 1.2</span>
+            </div>
 
-.bottom{
-display:flex;
-gap:20px;
-}
+            <a href="#" class="card-main-btn">
+                <i class="fa-solid fa-desktop"></i> Windows x64
+            </a>
 
-.small-btn{
-flex:1;
-padding:16px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-border-radius:16px;
-text-decoration:none;
-color:white;
-transition:.3s;
-}
+            <div class="card-sub-grid">
+                <a href="#" class="btn-sub">
+                    <i class="fa-brands fa-android"></i> Android APK
+                </a>
+                <a href="#" class="btn-sub">
+                    <i class="fa-solid fa-code"></i> Source
+                </a>
+            </div>
+        </div>
 
-.small-btn:hover{
-background:#2196f3;
-}
+    </main>
 
-/* Footer */
+    <footer>
+        &copy; 2026 Cryonix Launcher &middot; GPL-3.0
+    </footer>
 
-footer{
-text-align:center;
-padding:35px;
-color:#9ecfff;
-}
-
-/* Responsive */
-
-@media(max-width:768px){
-
-.hero h1{
-font-size:48px;
-}
-
-.hero p{
-font-size:18px;
-}
-
-.buttons{
-flex-direction:column;
-align-items:center;
-}
-
-.bottom{
-flex-direction:column;
-}
-
-header{
-padding:18px;
-}
-
-.logo{
-font-size:22px;
-}
-
-            }
+</body>
+</html>
