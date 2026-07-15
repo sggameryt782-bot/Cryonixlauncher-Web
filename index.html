@@ -65,6 +65,12 @@
             color: #2073ef; /* Ice blue logo icon */
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .nav-socials {
             display: flex;
             gap: 20px;
@@ -79,6 +85,17 @@
 
         .nav-socials a:hover {
             color: #2073ef;
+        }
+
+        /* Logo Image in Top Right */
+        .top-right-logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 2px;
         }
 
         /* Main Content Container */
@@ -182,11 +199,21 @@
             transform: translateY(-1px);
         }
 
+        /* Preview Label style */
+        .preview-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
         /* Screenshot Container with Bounce Animation */
         .screenshot-container {
             width: 100%;
             max-width: 650px;
-            margin: 20px 0 60px 0;
+            margin: 0px 0 60px 0;
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -325,10 +352,13 @@
             <i class="fa-solid fa-snowflake logo-icon"></i>
             <span>CryonixLauncher</span>
         </div>
-        <div class="nav-socials">
-            <a href="https://youtube.com/@cookedlauncher?si=-vfC74vXhV2LXlKf" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://discord.gg/eqpqBUT8De" target="_blank" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
-            <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <div class="header-right">
+            <div class="nav-socials">
+                <a href="https://youtube.com/@cookedlauncher?si=-vfC74vXhV2LXlKf" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://discord.gg/eqpqBUT8De" target="_blank" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <img src="9d2f8fab173bb79a16c8970b9a819191.webp" alt="Cryonix Logo" class="top-right-logo">
         </div>
     </header>
 
@@ -350,6 +380,8 @@
                 <i class="fa-brands fa-android"></i> Download APK
             </a>
         </div>
+
+        <div class="preview-label">LAUNCHER PREVIEW!</div>
 
         <div class="screenshot-container">
             <img src="Screenshot_20260706_175521.jpg" alt="Launcher Showcase Screenshot">
