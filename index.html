@@ -1,414 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryonixLauncher</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Base Reset & Styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background-color: #050508; /* Deep black background with a tiny hint of blue */
-            color: #f0f4f8; /* Light white/blue tint text for readability */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-        }
+  <title>Cryonix Launcher V2</title>
 
-        /* Subtle Abstract Blue Glows on Dark Background */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(32, 115, 239, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(32, 115, 239, 0.08) 0%, transparent 50%);
-            z-index: -1;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* Header Navigation */
-        header {
-            width: 100%;
-            max-width: 1200px;
-            padding: 24px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    :root {
+      --bg: #020307;
+      --panel: rgba(10, 12, 20, 0.78);
+      --border: rgba(255,255,255,0.13);
+      --text: #ffffff;
+      --muted: #9da3b2;
 
-        /* Top Left Logo Area with the WebP Logo */
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
+      --blue: #168cff;
+      --cyan: #00d9ff;
+      --purple: #9b4dff;
+      --pink: #ff35bd;
+      --orange: #ff9d00;
+    }
 
-        .top-left-logo {
-            width: 38px;
-            height: 38px;
-            object-fit: contain;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background-color: rgba(255, 255, 255, 0.02);
-            padding: 2px;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(0,110,255,.12), transparent 35%),
+        radial-gradient(circle at 10% 45%, rgba(0,200,255,.08), transparent 25%),
+        radial-gradient(circle at 90% 55%, rgba(180,0,255,.08), transparent 25%),
+        #020307;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .nav-socials {
-            display: flex;
-            gap: 20px;
-        }
+    /* ---------- Background ---------- */
 
-        .nav-socials a {
-            color: #8da2bb;
-            font-size: 1.3rem;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
+    .glow {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: .12;
+      pointer-events: none;
+      z-index: -1;
+    }
 
-        .nav-socials a:hover {
-            color: #2073ef;
-        }
+    .glow.one {
+      background: #0077ff;
+      top: 10%;
+      left: -250px;
+    }
 
-        /* Main Content Container */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 20px;
-            width: 100%;
-            max-width: 800px;
-        }
+    .glow.two {
+      background: #b000ff;
+      top: 45%;
+      right: -250px;
+    }
 
-        /* Live Status Badge */
-        .status-badge {
-            background-color: rgba(32, 115, 239, 0.1);
-            border: 1px solid rgba(32, 115, 239, 0.25);
-            color: #7faff7;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 28px;
-        }
+    .glow.three {
+      background: #00d9ff;
+      bottom: -250px;
+      left: 35%;
+    }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #10b981; 
-            border-radius: 50%;
-            box-shadow: 0 0 8px #10b981;
-        }
+    /* ---------- Navbar ---------- */
 
-        /* Title & Description */
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            color: #ffffff;
-            margin-bottom: 12px;
-        }
+    nav {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      margin: 16px auto;
+      padding: 14px 20px;
 
-        .tagline {
-            font-size: 1.25rem;
-            color: #8da2bb;
-            font-weight: 400;
-            margin-bottom: 40px;
-            line-height: 1.5;
-        }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-        /* Call To Action Buttons Block */
-        .cta-group {
-            display: flex;
-            gap: 16px;
-            width: 100%;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
+      border: 1px solid var(--border);
+      border-radius: 18px;
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 180px;
-        }
+      background: rgba(5,7,12,.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
 
-        .btn-primary {
-            background-color: #2073ef;
-            color: #ffffff;
-            border: none;
-            box-shadow: 0 4px 20px rgba(32, 115, 239, 0.4);
-        }
+      box-shadow:
+        0 0 35px rgba(0,100,255,.04),
+        inset 0 0 30px rgba(255,255,255,.015);
+    }
 
-        .btn-primary:hover {
-            background-color: #3b82f6;
-            transform: translateY(-1px);
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 21px;
+      font-weight: 700;
+    }
 
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
 
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-        }
+    .brand span {
+      background: linear-gradient(
+        90deg,
+        #fff,
+        #168cff,
+        #00d9ff,
+        #a94dff,
+        #ff3dbf
+      );
 
-        /* Preview Label style */
-        .preview-label {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-        /* Screenshot Container with Bounce Animation */
-        .screenshot-container {
-            width: 100%;
-            max-width: 650px;
-            margin: 0px 0 60px 0;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(32, 115, 239, 0.15);
-            animation: bounceSmooth 4s ease-in-out infinite;
-        }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
 
-        .screenshot-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+    .nav-links a {
+      color: #dfe3ec;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: .25s;
+    }
 
-        /* Continuous Premium Bounce Animation Definition */
-        @keyframes bounceSmooth {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-12px);
-            }
-        }
+    .nav-links a:hover {
+      background: rgba(255,255,255,.08);
+      color: white;
+    }
 
-        /* Second Section View: Download Box Card */
-        .download-card {
-            background-color: #0d0e12; 
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            margin-top: 20px;
-        }
+    /* ---------- Hero ---------- */
 
-        .card-label {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: #6987a3;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+    .hero {
+      position: relative;
+      max-width: 1100px;
+      min-height: 650px;
+      margin: auto;
 
-        .card-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 24px;
-        }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
 
-        .card-meta {
-            color: #8da2bb;
-            font-size: 1.05rem;
-            margin-bottom: 28px;
-        }
+      padding: 90px 20px 60px;
+    }
 
-        .card-meta span {
-            display: block;
-            margin-top: 4px;
-            font-weight: 500;
-            color: #2073ef;
-            font-size: 0.95rem;
-        }
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
 
-        /* Action Grid inside the card */
-        .card-main-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background-color: #2073ef;
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(32, 115, 239, 0.3);
-            transition: background-color 0.2s;
-        }
+    .version {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
 
-        .card-main-btn:hover {
-            background-color: #3b82f6;
-        }
+      padding: 9px 17px;
 
-        .card-sub-grid {
-            display: flex;
-            gap: 12px;
-        }
+      border: 1px solid rgba(0,180,255,.5);
+      border-radius: 100px;
 
-        .btn-sub {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-color: rgba(255, 255, 255, 0.04);
-            color: #8da2bb;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.2s;
-        }
+      background: rgba(0,120,255,.08);
 
-        .btn-sub:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.15);
-        }
+      color: #dceaff;
+      font-size: 13px;
 
-        /* Footer */
-        footer {
-            padding: 30px 20px;
-            font-size: 0.85rem;
-            color: #537895;
-            font-weight: 500;
-        }
+      box-shadow:
+        0 0 20px rgba(0,140,255,.1);
+    }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .cta-group { flex-direction: column; width: 100%; }
-            .btn { width: 100%; }
-            .card-sub-grid { flex-direction: column; }
-        }
-    </style>
+    .version-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+
+      background: #00bfff;
+
+      box-shadow:
+        0 0 12px #00bfff,
+        0 0 25px #8c3cff;
+    }
+
+    .hero h1 {
+      margin-top: 28px;
+
+      font-size: clamp(55px, 9vw, 105px);
+      line-height: .92;
+      letter-spacing: -5px;
+      font-weight: 900;
+
+      background: linear-gradient(
+        90deg,
+        #00c8ff,
+        #147cff,
+        #984dff,
+        #ff32bb,
+        #ff9c00
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      filter: drop-shadow(0 0 35px rgba(50,100,255,.16));
+    }
+
+    .hero h1 .white {
+      color: white;
+      background: none;
+      -webkit-text-fill-color: white;
+    }
+
+    .hero p {
+      margin: 28px auto 0;
+
+      max-width: 600px;
+
+      font-size: 20px;
+      line-height: 1.7;
+
+      color: #aeb5c5;
+    }
+
+    .hero p strong {
+      color: white;
+    }
+
+    /* ---------- Buttons ---------- */
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 35px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-width: 220px;
+      padding: 17px 24px;
+
+      border-radius: 14px;
+
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      transition:
+        transform .25s,
+        box-shadow .25s,
+        border-color .25s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-primary {
+      color: white;
+
+      background:
+        linear-gradient(
+          100deg,
+          #007cff,
+          #4b46ff,
+          #a83dff,
+          #f329b7
+        );
+
+      box-shadow:
+        0 0 25px rgba(57,83,255,.28);
+    }
+
+    .btn-primary:hover {
+      box-shadow:
+        0 0 40px rgba(70,80,255,.5);
+    }
+
+    .btn-outline {
+      color: white;
+
+      border: 1px solid rgba(0,180,255,.7);
+
+      background: rgba(0,20,40,.25);
+    }
+
+    .btn-outline:hover {
+      border-color: #ff3cc2;
+      box-shadow: 0 0 25px rgba(150,50,255,.2);
+    }
+
+    /* ---------- Crystals ---------- */
+
+    .crystal {
+      position: absolute;
+      width: 190px;
+      opacity: .8;
+      filter: drop-shadow(0 0 25px rgba(0,130,255,.35));
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .crystal.left {
+      left: -20px;
+      top: 180px;
+      transform: rotate(-12deg);
+    }
+
+    .crystal.right {
+      right: -20px;
+      bottom: 80px;
+      transform: rotate(12deg);
+    }
+
+    @keyframes float {
+      0%,100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -15px;
+      }
+    }
+
+    /* ---------- Preview ---------- */
+
+    .section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px 100px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 25px;
+
+      color: #bfc6d5;
+      font-size: 13px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      background: linear-gradient(
+        90deg,
+        #00cfff,
+        #8050ff,
+        #ff39c2
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .launcher {
+      border: 1px solid rgba(0,150,255,.45);
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(15,20,35,.92),
+          rgba(4,5,10,.95)
+        );
+
+      overflow: hidden;
+
+      box-shadow:
+        0 0 70px rgba(0,100,255,.12),
+        inset 0 0 50px rgba(255,255,255,.015);
+    }
+
+    .launcher-top {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #777;
+    }
+
+    .launcher-body {
+      display: flex;
+      min-height: 370px;
+    }
+
+    .sidebar {
+      width: 70px;
+      border-right: 1px solid rgba(255,255,255,.08);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 18px 0;
+      gap: 25px;
+    }
+
+    .side-icon {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+      color: #858b99;
+      font-size: 18px;
+    }
+
+    .side-icon.active {
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #007cff,
+          #8d45ff
+        );
+
+      box-shadow:
+        0 0 20px rgba(50,100,255,.3);
+    }
+
+    .launcher-main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      padding: 12px 22px;
+      border-radius: 10px;
+      color: #9299a8;
+    }
+
+    .tab.active {
+      color: white;
+      background: rgba(255,255,255,.06);
+    }
+
+    .mod {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 17px;
+
+      margin-bottom: 9px;
+
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.07);
+
+      background: rgba(255,255,255,.025);
+
+      transition: .2s;
+    }
+
+    .mod:hover {
+      border-color: rgba(0,150,255,.35);
+      background: rgba(0,120,255,.05);
+    }
+
+    .mod-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .mod-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #008cff,
+          #8a42ff
+        );
+    }
+
+    .play {
+      padding: 11px 28px;
+      border: none;
+      border-radius: 11px;
+
+      color: white;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(
+          100deg,
+          #007cff,
+          #9745ff,
+          #ec39b9
+        );
+
+      box-shadow: 0 0 20px rgba(80,70,255,.25);
+    }
+
+    /* ---------- Download ---------- */
+
+    .download-card {
+      max-width: 720px;
+      margin: 30px auto 100px;
+      padding: 45px 30px;
+
+      text-align: center;
+
+      border-radius: 24px;
+
+      border: 1px solid transparent;
+
+      background:
+        linear-gradient(#070910,#070910) padding-box,
+        linear-gradient(
+          120deg,
+          #00bfff,
+          #3975ff,
+          #a842ff,
+          #ff3bbd,
+          #ffae00,
+          #00d9a0
+        ) border-box;
+
+      box-shadow:
+        0 0 60px rgba(80,60,255,.08);
+    }
+
+    .stable {
+      color: #9ea7ba;
+      font-size: 12px;
+      letter-spacing: 5px;
+    }
+
+    .download-card h2 {
+      margin-top: 16px;
+      font-size: 45px;
+    }
+
+    .download-card p {
+      color: #9299a8;
+      margin: 14px 0 25px;
+    }
+
+    .download-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .download-buttons .windows {
+      grid-column: 1 / -1;
+    }
+
+    /* ---------- Footer ---------- */
+
+    footer {
+      text-align: center;
+      padding: 0 20px 35px;
+      color: #656b78;
+      font-size: 13px;
+    }
+
+    /* ---------- Responsive ---------- */
+
+    @media (max-width: 700px) {
+
+      nav {
+        padding: 11px 13px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .brand img {
+        width: 34px;
+        height: 34px;
+      }
+
+      .nav-links a {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      .hero {
+        min-height: 600px;
+        padding-top: 70px;
+      }
+
+      .hero h1 {
+        font-size: 58px;
+        letter-spacing: -3px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .crystal {
+        width: 100px;
+        opacity: .45;
+      }
+
+      .crystal.left {
+        left: -30px;
+      }
+
+      .crystal.right {
+        right: -30px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .launcher-body {
+        min-height: 330px;
+      }
+
+      .sidebar {
+        width: 55px;
+      }
+
+      .launcher-main {
+        padding: 10px;
+      }
+
+      .mod {
+        padding: 12px;
+      }
+
+      .mod-name {
+        font-size: 12px;
+      }
+
+      .play {
+        padding: 9px 14px;
+      }
+
+      .download-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .download-buttons .windows {
+        grid-column: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <header>
-        <div class="logo-area">
-            <img src="9d2f8fab173bb79a16c8970b9a819191.webp" alt="Cryonix Logo" class="top-left-logo">
-            <span>CryonixLauncher</span>
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+  <div class="glow three"></div>
+
+  <!-- NAVBAR -->
+
+  <nav>
+    <div class="brand">
+
+      <!-- YOUR LOGO -->
+      <img
+        src="file_0000000082048211a71891c223c8bc00.png"
+        alt="CryonixLauncher Logo"
+      >
+
+      <span>CryonixLauncher</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#">Discord</a>
+      <a href="#">GitHub</a>
+      <a href="#download">Docs</a>
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <img
+      class="crystal left"
+      src="file_0000000082048211a71891c223c8bc00.png"
+      alt=""
+    >
+
+    <img
+      class="crystal right"
+      src="file_0000000082048211a71891c223c8bc00.png"
+      alt=""
+    >
+
+    <div class="hero-content">
+
+      <div class="version">
+        <span class="version-dot"></span>
+        Latest Version: V2.3.1
+      </div>
+
+      <h1>
+        <span class="white">Crying</span><br>
+        Launcher V2
+      </h1>
+
+      <p>
+        Minimal, Fast & Powerful Launcher<br>
+        for <strong>Vanilla</strong> &
+        <strong>Fabric.</strong>
+      </p>
+
+      <div class="buttons">
+
+        <a class="btn btn-primary" href="#download">
+          ▣ &nbsp; Download for Windows
+        </a>
+
+        <a class="btn btn-outline" href="#download">
+          ▱ &nbsp; Download APK
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- LAUNCHER PREVIEW -->
+
+  <section class="section">
+
+    <div class="section-title">
+      ✦ &nbsp; <span>Launcher Preview</span> &nbsp; ✦
+    </div>
+
+    <div class="launcher">
+
+      <div class="launcher-top">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <div class="launcher-body">
+
+        <div class="sidebar">
+
+          <div class="side-icon active">◆</div>
+          <div class="side-icon">⌂</div>
+          <div class="side-icon">↓</div>
+          <div class="side-icon">⚙</div>
+          <div class="side-icon">✚</div>
+          <div class="side-icon">ⓘ</div>
+
         </div>
-        <div class="header-right">
-            <div class="nav-socials">
-                <a href="https://youtube.com/@cookedlauncher?si=-vfC74vXhV2LXlKf" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                <a href="https://discord.gg/eqpqBUT8De" target="_blank" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
-                <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+
+        <div class="launcher-main">
+
+          <div class="tabs">
+            <div class="tab active">⌂ &nbsp; HOME</div>
+            <div class="tab">◇ &nbsp; MODS</div>
+          </div>
+
+          <div class="mod">
+            <div class="mod-name">
+              <div class="mod-icon">⚡</div>
+              ULTRA OPTIMIZED
             </div>
-        </div>
-    </header>
+            <span>›</span>
+          </div>
 
-    <main>
-        
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            CryonixLauncher (latest) is now Live!
-        </div>
+          <div class="mod">
+            <div class="mod-name">
+              <div class="mod-icon">🔥</div>
+              SODIUM PLUS
+            </div>
+            <span>›</span>
+          </div>
 
-        <h1>CryonixLauncher</h1>
-        <p class="tagline">Minimal, fast Minecraft launcher<br>for Vanilla & Fabric.</p>
+          <div class="mod">
+            <div class="mod-name">
+              <div class="mod-icon">⚙</div>
+              IRIS SHADER
+            </div>
+            <span>›</span>
+          </div>
 
-        <div class="cta-group">
-            <a href="#" class="btn btn-primary">
-                <i class="fa-solid fa-laptop"></i> Windows
-            </a>
-            <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web/releases/latest/download/CRYONIX.LAUNCHER.apk" class="btn btn-secondary" download>
-                <i class="fa-brands fa-android"></i> Download APK
-            </a>
-        </div>
+          <div class="mod">
+            <div class="mod-name">
+              <div class="mod-icon">◇</div>
+              EMI (ITEMS & RECIPES)
+            </div>
+            <span>›</span>
+          </div>
 
-        <div class="preview-label">LAUNCHER PREVIEW!</div>
+          <div class="mod">
 
-        <div class="screenshot-container">
-            <img src="Screenshot_20260706_175521.jpg" alt="Launcher Showcase Screenshot">
-        </div>
-
-        <div class="download-card">
-            <div class="card-label">Get it Free</div>
-            <div class="card-title">Download</div>
-            
-            <div class="card-meta">
-                Always free & open source.
-                <span>Latest Version</span>
+            <div class="mod-name">
+              <div class="mod-icon">◈</div>
+              OPTIFINE (FOR FABRIC 1.20.1)
             </div>
 
-            <a href="#" class="card-main-btn">
-                <i class="fa-solid fa-desktop"></i> Windows x64
-            </a>
+            <button class="play">
+              ▶ &nbsp; Play
+            </button>
 
-            <div class="card-sub-grid">
-                <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web/releases/latest/download/CRYONIX.LAUNCHER.apk" class="btn-sub" download>
-                    <i class="fa-brands fa-android"></i> Android APK
-                </a>
-                <a href="https://github.com/sggameryt782-bot/CryonixLauncher-Web" target="_blank" class="btn-sub">
-                    <i class="fa-solid fa-code"></i> Source
-                </a>
-            </div>
+          </div>
+
         </div>
+      </div>
+    </div>
 
-    </main>
+  </section>
 
-    <footer>
-        &copy; 2026 CryonixLauncher &middot; GPL-3.0
-    </footer>
+
+  <!-- DOWNLOAD -->
+
+  <section id="download" class="download-card">
+
+    <div class="stable">
+      V2.3.1 &nbsp; | &nbsp; STABLE
+    </div>
+
+    <h2>Download</h2>
+
+    <p>
+      Always free & open source.
+    </p>
+
+    <div class="download-buttons">
+
+      <a class="btn btn-primary windows" href="#">
+        ▣ &nbsp; Download for Windows
+      </a>
+
+      <a class="btn btn-outline" href="#">
+        ↓ &nbsp; Download APK
+      </a>
+
+      <a class="btn btn-outline" href="#">
+        &lt;/&gt; &nbsp; Source Code
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+    © 2026 CryonixLauncher. All rights reserved.
+  </footer>
 
 </body>
-</html>
+    </html>
