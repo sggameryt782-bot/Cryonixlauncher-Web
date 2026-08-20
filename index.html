@@ -50,6 +50,23 @@ body{
     overflow-x:hidden;
 }
 
+
+/* ================= FADE ANIMATION ================= */
+
+.fade-in{
+    opacity:0;
+    transform:translateY(30px);
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+.fade-in.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+
 /* ================= NAVBAR ================= */
 
 .navbar{
@@ -114,6 +131,7 @@ body{
     color:white;
     background:#171717;
 }
+
 
 /* ================= HERO ================= */
 
@@ -229,6 +247,7 @@ body{
     background:#101010;
 }
 
+
 /* ================= HERO LOGO ================= */
 
 .hero-logo{
@@ -290,6 +309,7 @@ body{
         );
 }
 
+
 /* ================= SECTION ================= */
 
 .section{
@@ -318,6 +338,7 @@ body{
     font-size:34px;
     letter-spacing:-1px;
 }
+
 
 /* ================= PREVIEW ================= */
 
@@ -367,6 +388,7 @@ body{
     background:#050505;
 }
 
+
 /* ================= QUICK BAR ================= */
 
 .quick-bar{
@@ -410,6 +432,7 @@ body{
     color:#666;
     font-size:11px;
 }
+
 
 /* ================= FEATURES ================= */
 
@@ -477,6 +500,7 @@ body{
     line-height:1.7;
 }
 
+
 /* ================= DOWNLOAD ================= */
 
 .download-card{
@@ -516,6 +540,7 @@ body{
     font-size:14px;
 }
 
+
 /* ================= FOOTER ================= */
 
 footer{
@@ -529,6 +554,7 @@ footer{
 
     font-size:11px;
 }
+
 
 /* ================= MOBILE ================= */
 
@@ -619,6 +645,7 @@ footer{
     }
 }
 
+
 @media(max-width:450px){
 
     .hero h1{
@@ -654,6 +681,7 @@ footer{
         border-bottom:none !important;
     }
 }
+
 </style>
 </head>
 
@@ -709,9 +737,7 @@ footer{
         </div>
 
         <h1>
-            Cryonix
-            <br>
-            <span>Launcher V2</span>
+            CryonixlauncherV2
         </h1>
 
         <p class="hero-text">
@@ -813,8 +839,6 @@ footer{
 
         </div>
 
-
-        <!-- YOUR PREVIEW -->
 
         <img
             class="preview-image"
@@ -928,8 +952,6 @@ footer{
 
     <div class="buttons">
 
-        <!-- CHANGE THESE LINKS -->
-
         <a
             href="#"
             class="btn primary">
@@ -963,5 +985,42 @@ footer{
 </footer>
 
 
+<!-- ================= SCROLL FADE JAVASCRIPT ================= -->
+
+<script>
+
+const elements = document.querySelectorAll(
+    '.hero-content, .hero-logo, .quick-bar, .section-title, .preview-wrapper, .feature, .download-card'
+);
+
+elements.forEach(element => {
+    element.classList.add('fade-in');
+});
+
+
+const observer = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+        if(entry.isIntersecting){
+
+            entry.target.classList.add('show');
+
+        }
+
+    });
+
+}, {
+    threshold:0.15
+});
+
+
+elements.forEach(element => {
+    observer.observe(element);
+});
+
+</script>
+
+
 </body>
-      </html>
+</html>
