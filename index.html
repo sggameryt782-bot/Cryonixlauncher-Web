@@ -1,900 +1,736 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Cryonix Launcher V2</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #020307;
-      --panel: rgba(10, 12, 20, 0.78);
-      --border: rgba(255,255,255,0.13);
-      --text: #ffffff;
-      --muted: #9da3b2;
-
-      --blue: #168cff;
-      --cyan: #00d9ff;
-      --purple: #9b4dff;
-      --pink: #ff35bd;
-      --orange: #ff9d00;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0,110,255,.12), transparent 35%),
-        radial-gradient(circle at 10% 45%, rgba(0,200,255,.08), transparent 25%),
-        radial-gradient(circle at 90% 55%, rgba(180,0,255,.08), transparent 25%),
-        #020307;
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ---------- Background ---------- */
-
-    .glow {
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      filter: blur(130px);
-      opacity: .12;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .glow.one {
-      background: #0077ff;
-      top: 10%;
-      left: -250px;
-    }
-
-    .glow.two {
-      background: #b000ff;
-      top: 45%;
-      right: -250px;
-    }
-
-    .glow.three {
-      background: #00d9ff;
-      bottom: -250px;
-      left: 35%;
-    }
-
-    /* ---------- Navbar ---------- */
-
-    nav {
-      width: calc(100% - 32px);
-      max-width: 1200px;
-      margin: 16px auto;
-      padding: 14px 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      border: 1px solid var(--border);
-      border-radius: 18px;
-
-      background: rgba(5,7,12,.72);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-
-      box-shadow:
-        0 0 35px rgba(0,100,255,.04),
-        inset 0 0 30px rgba(255,255,255,.015);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 21px;
-      font-weight: 700;
-    }
-
-    .brand img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-    }
-
-    .brand span {
-      background: linear-gradient(
-        90deg,
-        #fff,
-        #168cff,
-        #00d9ff,
-        #a94dff,
-        #ff3dbf
-      );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 10px;
-    }
-
-    .nav-links a {
-      color: #dfe3ec;
-      text-decoration: none;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 14px;
-      transition: .25s;
-    }
-
-    .nav-links a:hover {
-      background: rgba(255,255,255,.08);
-      color: white;
-    }
-
-    /* ---------- Hero ---------- */
-
-    .hero {
-      position: relative;
-      max-width: 1100px;
-      min-height: 650px;
-      margin: auto;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      padding: 90px 20px 60px;
-    }
-
-    .hero-content {
-      max-width: 800px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .version {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-
-      padding: 9px 17px;
-
-      border: 1px solid rgba(0,180,255,.5);
-      border-radius: 100px;
-
-      background: rgba(0,120,255,.08);
-
-      color: #dceaff;
-      font-size: 13px;
-
-      box-shadow:
-        0 0 20px rgba(0,140,255,.1);
-    }
-
-    .version-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-
-      background: #00bfff;
-
-      box-shadow:
-        0 0 12px #00bfff,
-        0 0 25px #8c3cff;
-    }
-
-    .hero h1 {
-      margin-top: 28px;
-
-      font-size: clamp(55px, 9vw, 105px);
-      line-height: .92;
-      letter-spacing: -5px;
-      font-weight: 900;
-
-      background: linear-gradient(
-        90deg,
-        #00c8ff,
-        #147cff,
-        #984dff,
-        #ff32bb,
-        #ff9c00
-      );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-
-      filter: drop-shadow(0 0 35px rgba(50,100,255,.16));
-    }
-
-    .hero h1 .white {
-      color: white;
-      background: none;
-      -webkit-text-fill-color: white;
-    }
-
-    .hero p {
-      margin: 28px auto 0;
-
-      max-width: 600px;
-
-      font-size: 20px;
-      line-height: 1.7;
-
-      color: #aeb5c5;
-    }
-
-    .hero p strong {
-      color: white;
-    }
-
-    /* ---------- Buttons ---------- */
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin-top: 35px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      min-width: 220px;
-      padding: 17px 24px;
-
-      border-radius: 14px;
-
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 15px;
-
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-
-      transition:
-        transform .25s,
-        box-shadow .25s,
-        border-color .25s;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-    }
-
-    .btn-primary {
-      color: white;
-
-      background:
-        linear-gradient(
-          100deg,
-          #007cff,
-          #4b46ff,
-          #a83dff,
-          #f329b7
-        );
-
-      box-shadow:
-        0 0 25px rgba(57,83,255,.28);
-    }
-
-    .btn-primary:hover {
-      box-shadow:
-        0 0 40px rgba(70,80,255,.5);
-    }
-
-    .btn-outline {
-      color: white;
-
-      border: 1px solid rgba(0,180,255,.7);
-
-      background: rgba(0,20,40,.25);
-    }
-
-    .btn-outline:hover {
-      border-color: #ff3cc2;
-      box-shadow: 0 0 25px rgba(150,50,255,.2);
-    }
-
-    /* ---------- Crystals ---------- */
-
-    .crystal {
-      position: absolute;
-      width: 190px;
-      opacity: .8;
-      filter: drop-shadow(0 0 25px rgba(0,130,255,.35));
-      animation: float 5s ease-in-out infinite;
-    }
-
-    .crystal.left {
-      left: -20px;
-      top: 180px;
-      transform: rotate(-12deg);
-    }
-
-    .crystal.right {
-      right: -20px;
-      bottom: 80px;
-      transform: rotate(12deg);
-    }
-
-    @keyframes float {
-      0%,100% {
-        translate: 0 0;
-      }
-
-      50% {
-        translate: 0 -15px;
-      }
-    }
-
-    /* ---------- Preview ---------- */
-
-    .section {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px 100px;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 25px;
-
-      color: #bfc6d5;
-      font-size: 13px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-    }
-
-    .section-title span {
-      background: linear-gradient(
-        90deg,
-        #00cfff,
-        #8050ff,
-        #ff39c2
-      );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .launcher {
-      border: 1px solid rgba(0,150,255,.45);
-      border-radius: 22px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(15,20,35,.92),
-          rgba(4,5,10,.95)
-        );
-
-      overflow: hidden;
-
-      box-shadow:
-        0 0 70px rgba(0,100,255,.12),
-        inset 0 0 50px rgba(255,255,255,.015);
-    }
-
-    .launcher-top {
-      height: 48px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 16px;
-
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #777;
-    }
-
-    .launcher-body {
-      display: flex;
-      min-height: 370px;
-    }
-
-    .sidebar {
-      width: 70px;
-      border-right: 1px solid rgba(255,255,255,.08);
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 18px 0;
-      gap: 25px;
-    }
-
-    .side-icon {
-      width: 38px;
-      height: 38px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 11px;
-      color: #858b99;
-      font-size: 18px;
-    }
-
-    .side-icon.active {
-      color: white;
-
-      background:
-        linear-gradient(
-          135deg,
-          #007cff,
-          #8d45ff
-        );
-
-      box-shadow:
-        0 0 20px rgba(50,100,255,.3);
-    }
-
-    .launcher-main {
-      flex: 1;
-      padding: 20px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 14px;
-    }
-
-    .tab {
-      padding: 12px 22px;
-      border-radius: 10px;
-      color: #9299a8;
-    }
-
-    .tab.active {
-      color: white;
-      background: rgba(255,255,255,.06);
-    }
-
-    .mod {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 17px;
-
-      margin-bottom: 9px;
-
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.07);
-
-      background: rgba(255,255,255,.025);
-
-      transition: .2s;
-    }
-
-    .mod:hover {
-      border-color: rgba(0,150,255,.35);
-      background: rgba(0,120,255,.05);
-    }
-
-    .mod-name {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-    }
-
-    .mod-icon {
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-
-      border-radius: 9px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #008cff,
-          #8a42ff
-        );
-    }
-
-    .play {
-      padding: 11px 28px;
-      border: none;
-      border-radius: 11px;
-
-      color: white;
-      font-weight: bold;
-
-      cursor: pointer;
-
-      background:
-        linear-gradient(
-          100deg,
-          #007cff,
-          #9745ff,
-          #ec39b9
-        );
-
-      box-shadow: 0 0 20px rgba(80,70,255,.25);
-    }
-
-    /* ---------- Download ---------- */
-
-    .download-card {
-      max-width: 720px;
-      margin: 30px auto 100px;
-      padding: 45px 30px;
-
-      text-align: center;
-
-      border-radius: 24px;
-
-      border: 1px solid transparent;
-
-      background:
-        linear-gradient(#070910,#070910) padding-box,
-        linear-gradient(
-          120deg,
-          #00bfff,
-          #3975ff,
-          #a842ff,
-          #ff3bbd,
-          #ffae00,
-          #00d9a0
-        ) border-box;
-
-      box-shadow:
-        0 0 60px rgba(80,60,255,.08);
-    }
-
-    .stable {
-      color: #9ea7ba;
-      font-size: 12px;
-      letter-spacing: 5px;
-    }
-
-    .download-card h2 {
-      margin-top: 16px;
-      font-size: 45px;
-    }
-
-    .download-card p {
-      color: #9299a8;
-      margin: 14px 0 25px;
-    }
-
-    .download-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .download-buttons .windows {
-      grid-column: 1 / -1;
-    }
-
-    /* ---------- Footer ---------- */
-
-    footer {
-      text-align: center;
-      padding: 0 20px 35px;
-      color: #656b78;
-      font-size: 13px;
-    }
-
-    /* ---------- Responsive ---------- */
-
-    @media (max-width: 700px) {
-
-      nav {
-        padding: 11px 13px;
-      }
-
-      .brand {
-        font-size: 16px;
-      }
-
-      .brand img {
-        width: 34px;
-        height: 34px;
-      }
-
-      .nav-links a {
-        padding: 8px;
-        font-size: 12px;
-      }
-
-      .hero {
-        min-height: 600px;
-        padding-top: 70px;
-      }
-
-      .hero h1 {
-        font-size: 58px;
-        letter-spacing: -3px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .crystal {
-        width: 100px;
-        opacity: .45;
-      }
-
-      .crystal.left {
-        left: -30px;
-      }
-
-      .crystal.right {
-        right: -30px;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .launcher-body {
-        min-height: 330px;
-      }
-
-      .sidebar {
-        width: 55px;
-      }
-
-      .launcher-main {
-        padding: 10px;
-      }
-
-      .mod {
-        padding: 12px;
-      }
-
-      .mod-name {
-        font-size: 12px;
-      }
-
-      .play {
-        padding: 9px 14px;
-      }
-
-      .download-buttons {
-        grid-template-columns: 1fr;
-      }
-
-      .download-buttons .windows {
-        grid-column: auto;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cryonix Launcher V2</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #050505;
+  --panel: #0d0d0d;
+  --panel2: #121212;
+  --border: #292929;
+  --text: #f5f5f5;
+  --muted: #9b9b9b;
+  --soft: #181818;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% 0%, #181818 0%, #080808 40%, #030303 100%);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  background: rgba(5,5,5,.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+}
+
+.logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+/* HERO */
+
+.hero {
+  width: min(1100px, 90%);
+  margin: auto;
+  padding: 105px 0 90px;
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 7px 13px;
+  border: 1px solid #333;
+  border-radius: 100px;
+  background: #111;
+  color: #bbb;
+  font-size: 12px;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 8vw, 92px);
+  line-height: .95;
+  letter-spacing: -5px;
+  font-weight: 900;
+}
+
+.hero h1 span {
+  color: #888;
+}
+
+.hero p {
+  max-width: 590px;
+  margin: 25px auto 32px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* BUTTONS */
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 14px 25px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.btn.primary {
+  background: white;
+  color: black;
+  border-color: white;
+}
+
+.btn.secondary {
+  background: #101010;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: #666;
+}
+
+/* CRYSTAL */
+
+.crystal {
+  width: 115px;
+  height: 145px;
+  margin: 45px auto 0;
+  filter: drop-shadow(0 0 25px rgba(255,255,255,.15));
+}
+
+/* PREVIEW */
+
+.section {
+  width: min(1050px, 90%);
+  margin: auto;
+  padding: 70px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.section-title small {
+  color: #666;
+  letter-spacing: 4px;
+  font-size: 10px;
+}
+
+.section-title h2 {
+  margin-top: 10px;
+  font-size: 32px;
+}
+
+/* LAUNCHER WINDOW */
+
+.launcher {
+  border: 1px solid #292929;
+  border-radius: 18px;
+  background: #090909;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+.window-bar {
+  height: 43px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 17px;
+  border-bottom: 1px solid #222;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #555;
+}
+
+.launcher-body {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  min-height: 440px;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  padding: 25px 15px;
+  border-right: 1px solid #222;
+  background: #0b0b0b;
+}
+
+.side-item {
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  border-radius: 8px;
+  color: #888;
+  font-size: 13px;
+}
+
+.side-item.active {
+  background: #181818;
+  color: white;
+  border: 1px solid #292929;
+}
+
+/* CONTENT */
+
+.content {
+  padding: 30px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.content-header h3 {
+  font-size: 20px;
+}
+
+.version {
+  color: #777;
+  font-size: 12px;
+}
+
+.game-list {
+  display: grid;
+  gap: 10px;
+}
+
+.game {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px;
+  border: 1px solid #242424;
+  border-radius: 10px;
+  background: #0e0e0e;
+}
+
+.game-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: #1b1b1b;
+  border: 1px solid #333;
+  color: white;
+}
+
+.game-info {
+  flex: 1;
+}
+
+.game-info strong {
+  display: block;
+  font-size: 13px;
+}
+
+.game-info span {
+  color: #666;
+  font-size: 11px;
+}
+
+.play {
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* DOWNLOAD */
+
+.download-card {
+  max-width: 760px;
+  margin: auto;
+  padding: 45px;
+  text-align: center;
+  border: 1px solid #292929;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #111, #080808);
+}
+
+.download-card h2 {
+  font-size: 38px;
+  margin: 10px 0;
+}
+
+.download-card p {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+/* FEATURES */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.feature {
+  padding: 25px;
+  border: 1px solid #252525;
+  border-radius: 14px;
+  background: #0b0b0b;
+}
+
+.feature h3 {
+  margin-bottom: 8px;
+}
+
+.feature p {
+  color: #777;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 50px 20px;
+  color: #555;
+  font-size: 12px;
+  border-top: 1px solid #181818;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .navbar {
+    height: 62px;
+    padding: 0 20px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding: 75px 0 55px;
+  }
+
+  .hero h1 {
+    letter-spacing: -3px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .launcher-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: flex;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid #222;
+  }
+
+  .side-item {
+    white-space: nowrap;
+    margin-right: 5px;
+  }
+
+  .content {
+    padding: 18px;
+  }
+
+  .game {
+    padding: 12px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .download-card {
+    padding: 30px 18px;
+  }
+
+  .download-card h2 {
+    font-size: 30px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="glow one"></div>
-  <div class="glow two"></div>
-  <div class="glow three"></div>
+<!-- NAVBAR -->
 
-  <!-- NAVBAR -->
+<nav class="navbar">
 
-  <nav>
-    <div class="brand">
+  <div class="brand">
 
-      <!-- YOUR LOGO -->
-      <img
-        src="file_0000000082048211a71891c223c8bc00.png"
-        alt="CryonixLauncher Logo"
-      >
-
-      <span>CryonixLauncher</span>
+    <div class="logo">
+      <svg viewBox="0 0 100 120">
+        <polygon points="50,3 75,38 50,68 25,38"
+                 fill="#fff"/>
+        <polygon points="25,38 50,68 50,116 8,55"
+                 fill="#777"/>
+        <polygon points="75,38 50,68 50,116 92,55"
+                 fill="#aaa"/>
+        <polygon points="50,3 50,68 75,38"
+                 fill="#ccc"/>
+      </svg>
     </div>
 
-    <div class="nav-links">
-      <a href="#">Discord</a>
-      <a href="#">GitHub</a>
-      <a href="#download">Docs</a>
+    CRYONIX
+
+  </div>
+
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#preview">Launcher</a>
+    <a href="#download">Download</a>
+    <a href="#features">Features</a>
+  </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+  <div class="badge">
+    ● EARLY ACCESS · V2
+  </div>
+
+  <h1>
+    Cryonix<br>
+    <span>Launcher V2</span>
+  </h1>
+
+  <p>
+    A minimal, fast and powerful Minecraft launcher
+    designed for Vanilla and Fabric.
+  </p>
+
+  <div class="buttons">
+
+    <a class="btn primary"
+       href="#download">
+       Download for Windows
+    </a>
+
+    <a class="btn secondary"
+       href="#download">
+       Download APK
+    </a>
+
+  </div>
+
+  <div class="crystal">
+
+    <svg viewBox="0 0 100 130">
+
+      <polygon points="50,2 75,38 50,70 25,38"
+               fill="white"/>
+
+      <polygon points="25,38 50,70 50,128 8,58"
+               fill="#777"/>
+
+      <polygon points="75,38 50,70 50,128 92,58"
+               fill="#aaa"/>
+
+      <polygon points="50,2 50,70 75,38"
+               fill="#ddd"/>
+
+      <polygon points="25,52 40,75 27,104 12,68"
+               fill="#555"/>
+
+      <polygon points="75,52 60,75 73,104 88,68"
+               fill="#888"/>
+
+    </svg>
+
+  </div>
+
+</section>
+
+
+<!-- PREVIEW -->
+
+<section class="section" id="preview">
+
+  <div class="section-title">
+    <small>LAUNCHER PREVIEW</small>
+    <h2>Simple. Clean. Powerful.</h2>
+  </div>
+
+  <div class="launcher">
+
+    <div class="window-bar">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
     </div>
-  </nav>
 
+    <div class="launcher-body">
 
-  <!-- HERO -->
+      <aside class="sidebar">
 
-  <section class="hero">
+        <div class="side-item active">
+          ◈ HOME
+        </div>
 
-    <img
-      class="crystal left"
-      src="file_0000000082048211a71891c223c8bc00.png"
-      alt=""
-    >
+        <div class="side-item">
+          ◇ MODS
+        </div>
 
-    <img
-      class="crystal right"
-      src="file_0000000082048211a71891c223c8bc00.png"
-      alt=""
-    >
+        <div class="side-item">
+          ◇ INSTANCES
+        </div>
 
-    <div class="hero-content">
+        <div class="side-item">
+          ⚙ SETTINGS
+        </div>
 
-      <div class="version">
-        <span class="version-dot"></span>
-        Latest Version: V2.3.1
-      </div>
+      </aside>
 
-      <h1>
-        <span class="white">Crying</span><br>
-        Launcher V2
-      </h1>
+      <main class="content">
 
-      <p>
-        Minimal, Fast & Powerful Launcher<br>
-        for <strong>Vanilla</strong> &
-        <strong>Fabric.</strong>
-      </p>
+        <div class="content-header">
 
-      <div class="buttons">
+          <h3>Launcher</h3>
 
-        <a class="btn btn-primary" href="#download">
-          ▣ &nbsp; Download for Windows
-        </a>
-
-        <a class="btn btn-outline" href="#download">
-          ▱ &nbsp; Download APK
-        </a>
-
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- LAUNCHER PREVIEW -->
-
-  <section class="section">
-
-    <div class="section-title">
-      ✦ &nbsp; <span>Launcher Preview</span> &nbsp; ✦
-    </div>
-
-    <div class="launcher">
-
-      <div class="launcher-top">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-
-      <div class="launcher-body">
-
-        <div class="sidebar">
-
-          <div class="side-icon active">◆</div>
-          <div class="side-icon">⌂</div>
-          <div class="side-icon">↓</div>
-          <div class="side-icon">⚙</div>
-          <div class="side-icon">✚</div>
-          <div class="side-icon">ⓘ</div>
+          <span class="version">
+            V2.3.1 · STABLE
+          </span>
 
         </div>
 
-        <div class="launcher-main">
+        <div class="game-list">
 
-          <div class="tabs">
-            <div class="tab active">⌂ &nbsp; HOME</div>
-            <div class="tab">◇ &nbsp; MODS</div>
-          </div>
+          <div class="game">
 
-          <div class="mod">
-            <div class="mod-name">
-              <div class="mod-icon">⚡</div>
-              ULTRA OPTIMIZED
-            </div>
-            <span>›</span>
-          </div>
+            <div class="game-icon">⚡</div>
 
-          <div class="mod">
-            <div class="mod-name">
-              <div class="mod-icon">🔥</div>
-              SODIUM PLUS
-            </div>
-            <span>›</span>
-          </div>
-
-          <div class="mod">
-            <div class="mod-name">
-              <div class="mod-icon">⚙</div>
-              IRIS SHADER
-            </div>
-            <span>›</span>
-          </div>
-
-          <div class="mod">
-            <div class="mod-name">
-              <div class="mod-icon">◇</div>
-              EMI (ITEMS & RECIPES)
-            </div>
-            <span>›</span>
-          </div>
-
-          <div class="mod">
-
-            <div class="mod-name">
-              <div class="mod-icon">◈</div>
-              OPTIFINE (FOR FABRIC 1.20.1)
+            <div class="game-info">
+              <strong>Vanilla 1.21.1</strong>
+              <span>Latest Minecraft</span>
             </div>
 
             <button class="play">
-              ▶ &nbsp; Play
+              Play
             </button>
 
           </div>
 
+          <div class="game">
+
+            <div class="game-icon">◇</div>
+
+            <div class="game-info">
+              <strong>Fabric 1.21.1</strong>
+              <span>Fabric Loader</span>
+            </div>
+
+            <button class="play">
+              Play
+            </button>
+
+          </div>
+
+          <div class="game">
+
+            <div class="game-icon">+</div>
+
+            <div class="game-info">
+              <strong>New Instance</strong>
+              <span>Create a Minecraft instance</span>
+            </div>
+
+          </div>
+
         </div>
-      </div>
+
+      </main>
+
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <!-- DOWNLOAD -->
+<!-- FEATURES -->
 
-  <section id="download" class="download-card">
+<section class="section" id="features">
 
-    <div class="stable">
-      V2.3.1 &nbsp; | &nbsp; STABLE
+  <div class="section-title">
+    <small>WHY CRYONIX</small>
+    <h2>Built to stay simple.</h2>
+  </div>
+
+  <div class="features">
+
+    <div class="feature">
+      <h3>Fast</h3>
+      <p>
+        Lightweight interface designed
+        for quick Minecraft launching.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>Clean</h3>
+      <p>
+        No unnecessary clutter.
+        Everything you need stays accessible.
+      </p>
+    </div>
+
+    <div class="feature">
+      <h3>Open Source</h3>
+      <p>
+        Transparent and community-friendly
+        launcher development.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- DOWNLOAD -->
+
+<section class="section" id="download">
+
+  <div class="download-card">
+
+    <div class="badge">
+      V2.3.1 · STABLE
     </div>
 
     <h2>Download</h2>
 
     <p>
-      Always free & open source.
+      Always free. Built for Minecraft.
     </p>
 
-    <div class="download-buttons">
+    <div class="buttons">
 
-      <a class="btn btn-primary windows" href="#">
-        ▣ &nbsp; Download for Windows
+      <a class="btn primary" href="#">
+        Download for Windows
       </a>
 
-      <a class="btn btn-outline" href="#">
-        ↓ &nbsp; Download APK
+      <a class="btn secondary" href="#">
+        Download APK
       </a>
 
-      <a class="btn btn-outline" href="#">
-        &lt;/&gt; &nbsp; Source Code
+      <a class="btn secondary" href="#">
+        Source Code
       </a>
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <footer>
-    © 2026 CryonixLauncher. All rights reserved.
-  </footer>
+<footer>
+  © 2026 Cryonix Launcher · Built for Minecraft
+</footer>
 
 </body>
-    </html>
+</html>
